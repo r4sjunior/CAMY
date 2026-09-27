@@ -117,7 +117,10 @@ export default function VortexPage() {
       {ready && (
         <div className="ui" data-hidden={uiHidden}>
           <header className="topbar">
-            <span className="brand">Vortex Cam</span>
+            <span className="brand">
+              <img className="brand__mark" src="/favicon.svg" alt="" width={20} height={20} />
+              <span className="brand__text">Vortex Cam</span>
+            </span>
             <span className="fps" title="Quadros por segundo">
               {fps} fps
             </span>

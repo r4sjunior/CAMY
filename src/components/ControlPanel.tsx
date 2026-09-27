@@ -1,5 +1,6 @@
 import { useVortexStore } from '../hooks/useVortexStore';
 import { PRESETS } from '../utils/params';
+import { IconRefresh } from './Icons';
 import { ParamSlider } from './ParamSlider';
 
 const pct = (v: number) => `${Math.round(v * 100)}%`;
@@ -18,6 +19,7 @@ export function ControlPanel({ open, onPreset }: Props) {
   return (
     <section className="panel" data-open={open} aria-label="Controles do efeito" aria-hidden={!open}>
       <div className="panel__scroll">
+        <p className="panel__eyebrow">Estilos</p>
         <div className="presets" role="group" aria-label="Estilos prontos">
           {PRESETS.map((p) => (
             <button
@@ -51,8 +53,8 @@ export function ControlPanel({ open, onPreset }: Props) {
             label="Caleidoscópio"
             format={(v) => (v < 2 ? 'Desligado' : `${Math.round(v)} fatias`)}
           />
-          <button type="button" className="link-btn" onClick={reset}>
-            Restaurar padrões
+          <button type="button" className="reset-btn" onClick={reset}>
+            <IconRefresh width={16} height={16} /> Restaurar padrões
           </button>
         </details>
 
