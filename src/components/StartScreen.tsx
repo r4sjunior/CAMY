@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { IconCamera } from './Icons';
+import { IconCamera, IconMarkSpiral, IconMarkSquare, IconMarkTarget, IconWormhole } from './Icons';
 
 interface Props {
   webglOk: boolean;
@@ -11,41 +11,104 @@ interface Props {
 export function StartScreen({ webglOk, onStart, onIntent }: Props) {
   const root = useRef<HTMLDivElement>(null);
 
-  // Uma única sequência de entrada: a espiral se abre e o texto sobe em seguida.
+  // Uma única sequência de entrada: o vórtice se abre, o logo bate (glitch) e o
+  // resto do "painel de instrumentos" surge por último.
   useLayoutEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-      tl.from('.vortex', { scale: 0.4, rotate: -140, opacity: 0, duration: 2.2 })
-        .from('.start__line', { yPercent: 110, duration: 1.1, stagger: 0.12 }, 0.35)
-        .from('.start__reveal', { opacity: 0, y: 16, duration: 0.9, stagger: 0.1 }, 0.9);
+      tl.from('.start__orb', { scale: 0.55, rotate: -90, opacity: 0, duration: 2 })
+        .from('.start__floor', { opacity: 0, duration: 1.2 }, 0.3)
+        .from('.start__logo-line', { yPercent: 110, duration: 1, stagger: 0.1 }, 0.5)
+        .from('.start__reveal', { opacity: 0, y: 10, duration: 0.8, stagger: 0.06 }, 0.9);
     }, root);
     return () => ctx.revert();
   }, []);
 
   return (
     <div className="start" ref={root}>
-      <div className="vortex" aria-hidden="true">
+      {/* ───────── Vórtice decorativo: chão com grade + anel colorido + lente ───────── */}
+      <div className="start__visual" aria-hidden="true">
+        <div className="start__floor" />
+        <div className="start__orb">
+          <div className="start__swirl" />
+          <div className="start__lens" />
+        </div>
+      </div>
+
+      {/* ───────── Logo + tagline (canto superior esquerdo) ───────── */}
+      <header className="start__brand">
+        <h1 className="start__logo" aria-label="Vortex Cam">
+          <span className="start__logo-mask">
+            <span className="start__logo-line" data-text="VORTEX">
+              VORTEX
+            </span>
+          </span>
+          <span className="start__logo-mask">
+            <span className="start__logo-line" data-text="CAM">
+              CAM
+            </span>
+          </span>
+        </h1>
+        <p className="start__tagline start__reveal">
+          Capture o invisível.
+          <br />
+          Transforme a realidade em arte.
+        </p>
+      </header>
+
+      {/* ───────── HUD: coordenadas + rótulos (canto superior direito) ───────── */}
+      <div className="start__coords start__reveal" aria-hidden="true">
+        <p>
+          22.9068° S
+          <br />
+          43.1729° W
+        </p>
+        <span className="start__cross">+</span>
+      </div>
+
+      <ul className="start__labels start__reveal" aria-hidden="true">
+        <li>Lente</li>
+        <li>Movimento</li>
+        <li>Tempo</li>
+        <li>Infinito</li>
+      </ul>
+
+      {/* ───────── HUD: coluna de marcas (borda esquerda) ───────── */}
+      <div className="start__marks start__reveal" aria-hidden="true">
+        <span className="start__cross">+</span>
+        <span className="start__cross">+</span>
+        <IconMarkTarget />
+        <IconMarkSpiral />
+        <IconMarkSquare />
+      </div>
+
+      {/* ───────── HUD: selo 360° + moldura wireframe (canto inferior direito) ───────── */}
+      <div className="start__badge start__reveal" aria-hidden="true">
+        <IconMarkSpiral />
+        <p>
+          360°
+          <br />
+          experiência
+        </p>
+      </div>
+
+      <div className="start__wire start__reveal" aria-hidden="true">
+        <IconWormhole />
+      </div>
+
+      <div className="start__bars start__reveal" aria-hidden="true">
         <span />
         <span />
         <span />
       </div>
 
+      {/* ───────── Conteúdo funcional (âncora inferior esquerda) ───────── */}
       <main className="start__content">
-        <h1 className="start__title">
-          <span className="start__mask">
-            <span className="start__line">Sua câmera,</span>
-          </span>
-          <span className="start__mask">
-            <span className="start__line">em espiral</span>
-          </span>
-          <span className="start__mask">
-            <span className="start__line">infinita.</span>
-          </span>
-        </h1>
-
-        <p className="start__lead start__reveal">
-          Centenas de cópias do seu vídeo giram num túnel fractal, ao vivo. Ajuste, toque na imagem e grave.
+        <p className="start__whisper start__reveal">
+          Algumas perspectivas
+          <br />
+          não deveriam ser vistas.
         </p>
 
         <button

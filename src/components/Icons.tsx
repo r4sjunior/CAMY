@@ -61,6 +61,36 @@ export const IconRefresh = (p: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+/** Marcas decorativas no estilo "painel de instrumentos" da tela inicial. */
+export const IconMarkSpiral = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base} strokeWidth={1.4} {...p}>
+    <path d="M12 4a8 8 0 1 1-5.66 2.34" />
+    <path d="M12 8a4 4 0 1 1-2.83 1.17" />
+  </svg>
+);
+
+export const IconMarkTarget = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base} strokeWidth={1.4} {...p}>
+    <circle cx="12" cy="12" r="8" />
+    <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+export const IconMarkSquare = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base} strokeWidth={1.4} {...p}>
+    <rect x="5" y="5" width="14" height="14" rx="2" />
+  </svg>
+);
+
+export const IconWormhole = (p: SVGProps<SVGSVGElement>) => (
+  <svg {...base} strokeWidth={1.2} {...p}>
+    <ellipse cx="12" cy="5" rx="7.5" ry="2.1" />
+    <ellipse cx="12" cy="19" rx="7.5" ry="2.1" />
+    <path d="M4.5 5c0 5.2 15 5.2 15 0M4.5 19c0-5.2 15-5.2 15 0" />
+    <path d="M4.5 5v14M19.5 5v14" strokeDasharray="1.5 2.5" />
+  </svg>
+);
+
 export const IconCamera = (p: SVGProps<SVGSVGElement>) => (
   <svg {...base} {...p}>
     <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" />

@@ -9,6 +9,10 @@
   --glass: rgba(18, 13, 34, 0.56);
   --line: rgba(255, 255, 255, 0.14);
   --gradient-vortex: linear-gradient(90deg, var(--plasma), var(--ultra), var(--aqua));
+  --rasta-red: #e6392b;
+  --rasta-yellow: #ffcc33;
+  --rasta-green: #2fae5a;
+  --font-mono: 'Space Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
   --panel-bg: linear-gradient(165deg, rgba(46, 22, 66, 0.82), rgba(13, 10, 24, 0.9) 60%);
   --glow-plasma: rgba(255, 79, 216, 0.4);
   --glow-aqua: rgba(55, 230, 255, 0.3);
@@ -118,51 +122,15 @@ button:disabled {
   cursor: crosshair;
 }
 
-/* ───────────── Tela inicial ───────────── */
+/* ───────────── Tela inicial: pôster "painel de instrumentos" ───────────── */
 .start {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: flex-end;
-  padding: calc(24px + var(--safe-top)) 24px calc(28px + var(--safe-bottom));
+  padding: calc(24px + var(--safe-top)) 22px calc(28px + var(--safe-bottom));
   overflow: hidden;
-}
-
-.vortex {
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin-inline: auto;
-  top: 4%;
-  width: min(130vw, 980px);
-  aspect-ratio: 1;
-  pointer-events: none;
-  filter: drop-shadow(0 0 60px var(--glow-plasma)) drop-shadow(0 0 100px var(--glow-aqua));
-}
-
-.vortex span {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-}
-
-.vortex span:nth-child(1) {
-  background: conic-gradient(from 0deg, var(--plasma), var(--ultra), var(--aqua), var(--ultra), var(--plasma));
-  -webkit-mask: repeating-radial-gradient(circle, #000 0 5px, transparent 5px 19px);
-  mask: repeating-radial-gradient(circle, #000 0 5px, transparent 5px 19px);
-  opacity: 0.85;
-  animation: spin 48s linear infinite;
-}
-
-.vortex span:nth-child(2) {
-  background: repeating-conic-gradient(from 0deg, transparent 0 9deg, rgba(10, 8, 18, 0.9) 9deg 18deg);
-  -webkit-mask: radial-gradient(circle, transparent 3%, #000 30%);
-  mask: radial-gradient(circle, transparent 3%, #000 30%);
-  animation: spin 36s linear infinite reverse;
-}
-
-.vortex span:nth-child(3) {
-  background: radial-gradient(circle, var(--night) 0 5%, transparent 46%, var(--night) 71%);
+  background: #000;
 }
 
 @keyframes spin {
@@ -171,57 +139,352 @@ button:disabled {
   }
 }
 
+/* — Vórtice decorativo: chão em grade + anel de cor + lente central — */
+.start__visual {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.start__floor {
+  position: absolute;
+  left: -20%;
+  right: -20%;
+  bottom: 0;
+  height: 40%;
+  transform: perspective(360px) rotateX(62deg);
+  transform-origin: bottom;
+  background: radial-gradient(120% 140% at 50% 0%, rgba(230, 57, 43, 0.35), transparent 55%),
+    radial-gradient(120% 140% at 50% 0%, rgba(255, 204, 51, 0.22) 12%, transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px 13%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0 1px, transparent 1px 8%),
+    linear-gradient(to bottom, transparent, #000 94%);
+}
+
+.start__orb {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  width: min(150vw, 900px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+}
+
+.start__swirl {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--rasta-red) 0deg 42deg,
+    var(--rasta-yellow) 42deg 95deg,
+    var(--rasta-green) 95deg 152deg,
+    #050505 152deg 182deg,
+    var(--rasta-green) 182deg 232deg,
+    var(--rasta-yellow) 232deg 282deg,
+    var(--rasta-red) 282deg 332deg,
+    #050505 332deg 360deg
+  );
+  filter: blur(3px) saturate(1.35);
+  -webkit-mask-image: radial-gradient(circle, transparent 9%, #000 22%, #000 80%, transparent 97%);
+  mask-image: radial-gradient(circle, transparent 9%, #000 22%, #000 80%, transparent 97%);
+  animation: spin 90s linear infinite;
+}
+
+.start__swirl::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from 12deg, rgba(0, 0, 0, 0.55) 0 6deg, transparent 6deg 15deg);
+  mix-blend-mode: multiply;
+}
+
+.start__lens {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.4), transparent 42%),
+    conic-gradient(from 0deg, #1c1c1c, #030303 18%, #1c1c1c 36%, #030303 54%, #1c1c1c 72%, #030303 90%, #1c1c1c 100%),
+    radial-gradient(circle, #000 58%, #060606 100%);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.16), 0 0 50px 14px rgba(0, 0, 0, 0.85),
+    0 0 70px 6px rgba(47, 174, 90, 0.35);
+}
+
+/* — Logo + tagline (canto superior esquerdo) — */
+.start__brand {
+  position: absolute;
+  z-index: 1;
+  top: calc(20px + var(--safe-top));
+  left: 22px;
+  max-width: min(72%, 300px);
+}
+
+.start__logo {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  font-size: clamp(2.1rem, 10vw, 3rem);
+  color: #fff;
+}
+
+.start__logo-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+.start__logo-line {
+  position: relative;
+  z-index: 0;
+  display: inline-block;
+}
+
+.start__logo-line::before,
+.start__logo-line::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  mix-blend-mode: screen;
+}
+
+.start__logo-line::before {
+  color: var(--rasta-red);
+  transform: translateX(2px);
+}
+
+.start__logo-line::after {
+  color: var(--rasta-green);
+  transform: translateX(-2px);
+}
+
+.start__tagline {
+  margin: 10px 0 0;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.start__tagline::after {
+  content: '—';
+  display: block;
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* — HUD: coordenadas + rótulos (canto superior direito) — */
+.start__coords {
+  position: absolute;
+  z-index: 1;
+  top: calc(20px + var(--safe-top));
+  right: 18px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.start__coords p {
+  margin: 0;
+}
+
+.start__cross {
+  display: block;
+  font-family: var(--font-mono);
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.start__coords .start__cross {
+  margin-top: 10px;
+}
+
+.start__labels {
+  position: absolute;
+  z-index: 1;
+  top: calc(108px + var(--safe-top));
+  right: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.start__labels li + li::before {
+  content: '//';
+  display: block;
+  margin-bottom: 5px;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+/* — HUD: coluna de marcas na borda esquerda — */
+.start__marks {
+  position: absolute;
+  z-index: 1;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-70%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.start__marks svg {
+  width: 17px;
+  height: 17px;
+}
+
+.start__marks .start__cross {
+  width: 17px;
+  text-align: center;
+}
+
+/* — HUD: selo 360° + moldura wireframe + barra de cor (canto inferior direito) — */
+.start__badge {
+  position: absolute;
+  z-index: 1;
+  right: 18px;
+  bottom: calc(196px + var(--safe-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.start__badge svg {
+  width: 20px;
+  height: 20px;
+}
+
+.start__badge p {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+}
+
+.start__wire {
+  position: absolute;
+  z-index: 1;
+  right: 18px;
+  bottom: calc(112px + var(--safe-bottom));
+  width: 60px;
+  height: 60px;
+  display: grid;
+  place-items: center;
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.start__wire svg {
+  width: 30px;
+  height: 30px;
+}
+
+.start__bars {
+  position: absolute;
+  z-index: 1;
+  right: 18px;
+  bottom: calc(88px + var(--safe-bottom));
+  display: flex;
+  gap: 4px;
+}
+
+.start__bars span {
+  width: 18px;
+  height: 6px;
+  border-radius: 1px;
+}
+
+.start__bars span:nth-child(1) {
+  background: var(--rasta-red);
+}
+
+.start__bars span:nth-child(2) {
+  background: var(--rasta-yellow);
+}
+
+.start__bars span:nth-child(3) {
+  background: var(--rasta-green);
+}
+
+/* — Conteúdo funcional (âncora inferior esquerda) — */
 .start__content {
   position: relative;
   z-index: 1;
-  width: min(640px, 100%);
+  width: min(560px, 78%);
 }
 
-.start__title {
-  margin: 0 0 20px;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: clamp(2.7rem, 10.5vw, 6.4rem);
-  line-height: 0.96;
-  letter-spacing: -0.035em;
+.start__whisper {
+  margin: 0 0 16px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.68);
 }
 
-.start__mask {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.06em;
+.start .cta {
+  background: #fff;
+  color: #0a0a0a;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.7);
 }
 
-.start__line {
-  display: inline-block;
-  background: var(--gradient-vortex);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
-
-.start__lead {
-  margin: 0 0 24px;
-  max-width: 34ch;
-  font-size: 1.1rem;
-  line-height: 1.5;
-  color: var(--bone);
+.start .cta:hover:not(:disabled) {
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.8), 0 0 0 4px rgba(255, 204, 51, 0.35);
 }
 
 .start__fine {
-  margin: 20px 0 0;
+  margin: 18px 0 0;
   max-width: 46ch;
-  font-size: 0.82rem;
-  line-height: 1.5;
-  color: var(--dim);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .start__warn {
   margin: 14px 0 0;
   padding: 12px 14px;
-  border: 1px solid var(--rec);
-  border-radius: 12px;
-  font-size: 0.9rem;
+  border: 1px solid var(--rasta-red);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
 }
 
 .cta {
